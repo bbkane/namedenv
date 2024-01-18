@@ -6,7 +6,7 @@ CREATE TABLE env_var_unique_name (
     name TEXT NOT NULL,
     FOREIGN KEY (env_id) REFERENCES env(id) ON DELETE CASCADE,
     UNIQUE(env_id, name)
-) STRICT;
+) ;
 
 CREATE INDEX env_var_unique_name_env_id_idx ON env_var_unique_name(env_id);
 
@@ -17,12 +17,12 @@ CREATE TABLE env_var_local (
     env_id INTEGER NOT NULL,
     name TEXT NOT NULL,
     comment TEXT,
-    create_time TEXT NOT NULL,
-    update_time TEXT NOT NULL,
+    create_time TIMESTAMP NOT NULL,
+    update_time TIMESTAMP NOT NULL,
     value TEXT NOT NULL,
     FOREIGN KEY (env_id) REFERENCES env(id) ON DELETE CASCADE,
     UNIQUE(env_id, name)
-) STRICT;
+) ;
 
 CREATE INDEX env_var_local_env_id_idx ON env_var_unique_name(env_id);
 

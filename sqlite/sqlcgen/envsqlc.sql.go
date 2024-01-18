@@ -7,6 +7,7 @@ package sqlcgen
 
 import (
 	"context"
+	"time"
 )
 
 const createEnv = `-- name: CreateEnv :one
@@ -21,15 +22,15 @@ RETURNING name, comment, create_time, update_time
 type CreateEnvParams struct {
 	Name       string
 	Comment    *string
-	CreateTime string
-	UpdateTime string
+	CreateTime time.Time
+	UpdateTime time.Time
 }
 
 type CreateEnvRow struct {
 	Name       string
 	Comment    *string
-	CreateTime string
-	UpdateTime string
+	CreateTime time.Time
+	UpdateTime time.Time
 }
 
 func (q *Queries) CreateEnv(ctx context.Context, arg CreateEnvParams) (CreateEnvRow, error) {
@@ -60,8 +61,8 @@ INSERT INTO keyring_entry(
 type CreateKeyringEntryParams struct {
 	Name       string
 	Comment    *string
-	CreateTime string
-	UpdateTime string
+	CreateTime time.Time
+	UpdateTime time.Time
 }
 
 func (q *Queries) CreateKeyringEntry(ctx context.Context, arg CreateKeyringEntryParams) error {
@@ -86,8 +87,8 @@ type CreateLocalEnvVarParams struct {
 	EnvID      int64
 	Name       string
 	Comment    *string
-	CreateTime string
-	UpdateTime string
+	CreateTime time.Time
+	UpdateTime time.Time
 	Value      string
 }
 
@@ -174,8 +175,8 @@ WHERE name = ?5
 type UpdateEnvParams struct {
 	NewName    *string
 	Comment    *string
-	CreateTime *string
-	UpdateTime *string
+	CreateTime *time.Time
+	UpdateTime *time.Time
 	Name       string
 }
 

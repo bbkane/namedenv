@@ -4,14 +4,16 @@
 
 package sqlcgen
 
-import ()
+import (
+	"time"
+)
 
 type Env struct {
 	ID         int64
 	Name       string
 	Comment    *string
-	CreateTime string
-	UpdateTime string
+	CreateTime time.Time
+	UpdateTime time.Time
 }
 
 type EnvVarLocal struct {
@@ -19,8 +21,8 @@ type EnvVarLocal struct {
 	EnvID      int64
 	Name       string
 	Comment    *string
-	CreateTime string
-	UpdateTime string
+	CreateTime time.Time
+	UpdateTime time.Time
 	Value      string
 }
 
@@ -34,6 +36,14 @@ type KeyringEntry struct {
 	ID         int64
 	Name       string
 	Comment    *string
-	CreateTime string
-	UpdateTime string
+	CreateTime time.Time
+	UpdateTime time.Time
+}
+
+type TestTimestampTable struct {
+	ID         int64
+	Name       string
+	Comment    *string
+	CreateTime time.Time
+	UpdateTime time.Time
 }

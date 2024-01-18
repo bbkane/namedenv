@@ -34,28 +34,19 @@ func (e *EnvService) EnvCreate(ctx context.Context, args domain.EnvCreateArgs) (
 	createdEnvID, err := queries.CreateEnv(ctx, sqlcgen.CreateEnvParams{
 		Name:       args.Name,
 		Comment:    args.Comment,
-		CreateTime: domain.TimeToString(args.CreateTime),
-		UpdateTime: domain.TimeToString(args.UpdateTime),
+		CreateTime: args.CreateTime,
+		UpdateTime: args.CreateTime,
 	})
 
 	if err != nil {
 		return nil, fmt.Errorf("could not create env in db: %w", err)
 	}
 
-	createTime, err := domain.StringToTime(createdEnvID.CreateTime)
-	if err != nil {
-		panic(err)
-	}
-	updateTime, err := domain.StringToTime(createdEnvID.UpdateTime)
-	if err != nil {
-		panic(err)
-	}
-
 	return &domain.Env{
 		Name:       createdEnvID.Name,
 		Comment:    createdEnvID.Comment,
-		CreateTime: createTime,
-		UpdateTime: updateTime,
+		CreateTime: createdEnvID.CreateTime,
+		UpdateTime: createdEnvID.UpdateTime,
 	}, nil
 }
 
@@ -63,23 +54,11 @@ func (e *EnvService) EnvUpdate(ctx context.Context, name string, args domain.Env
 
 	queries := sqlcgen.New(e.db)
 
-	var createTimeStr *string
-	if args.CreateTime != nil {
-		tmp := domain.TimeToString(*args.CreateTime)
-		createTimeStr = &tmp
-	}
-
-	var updateTimeStr *string
-	if args.CreateTime != nil {
-		tmp := domain.TimeToString(*args.UpdateTime)
-		updateTimeStr = &tmp
-	}
-
 	err := queries.UpdateEnv(ctx, sqlcgen.UpdateEnvParams{
 		NewName:    args.NewName,
 		Comment:    args.Comment,
-		CreateTime: createTimeStr,
-		UpdateTime: updateTimeStr,
+		CreateTime: args.CreateTime,
+		UpdateTime: args.UpdateTime,
 		Name:       name,
 	})
 
@@ -102,8 +81,8 @@ func (e *EnvService) EnvVarLocalCreate(ctx context.Context, args domain.EnvVarLo
 		EnvID:      envID,
 		Name:       args.Name,
 		Comment:    args.Comment,
-		CreateTime: domain.TimeToString(args.CreateTime),
-		UpdateTime: domain.TimeToString(args.UpdateTime),
+		CreateTime: args.CreateTime,
+		UpdateTime: args.UpdateTime,
 		Value:      args.Value,
 	})
 
@@ -135,22 +114,12 @@ func (e *EnvService) EnvVarLocalList(ctx context.Context, envName string) ([]dom
 	var ret []domain.LocalEnvVar
 	for _, sqlcEnv := range envs {
 
-		createTime, err := domain.StringToTime(sqlcEnv.CreateTime)
-		if err != nil {
-			return nil, fmt.Errorf("invalid create time for env_var %s: %w", sqlcEnv.Name, err)
-		}
-
-		updateTime, err := domain.StringToTime(sqlcEnv.UpdateTime)
-		if err != nil {
-			return nil, fmt.Errorf("invalid update time for env_var %s: %w", sqlcEnv.Name, err)
-		}
-
 		ret = append(ret, domain.LocalEnvVar{
 			Name:       sqlcEnv.Name,
 			Comment:    sqlcEnv.Comment,
-			CreateTime: createTime,
+			CreateTime: sqlcEnv.CreateTime,
 			EnvName:    envName,
-			UpdateTime: updateTime,
+			UpdateTime: sqlcEnv.UpdateTime,
 			Value:      sqlcEnv.Value,
 		})
 	}
@@ -184,8 +153,8 @@ func (e *EnvService) KeyringEntryCreate(ctx context.Context, args domain.Keyring
 	err = queries.CreateKeyringEntry(ctx, sqlcgen.CreateKeyringEntryParams{
 		Name:       args.Name,
 		Comment:    args.Comment,
-		CreateTime: domain.TimeToString(args.CreateTime),
-		UpdateTime: domain.TimeToString(args.UpdateTime),
+		CreateTime: args.CreateTime,
+		UpdateTime: args.CreateTime,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("val in keyring, but not in db: (%s, %s) %w", e.keyring.Service(), args.Name, err)
