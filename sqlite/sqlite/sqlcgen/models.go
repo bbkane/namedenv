@@ -4,11 +4,15 @@
 
 package sqlcgen
 
+import (
+	"go.bbkane.com/envelope/sqlite/sqlite"
+)
+
 type Env struct {
 	EnvID      int64
 	Name       string
 	Comment    string
-	CreateTime string
+	CreateTime sqlite.SQLiteTime
 	UpdateTime string
 }
 

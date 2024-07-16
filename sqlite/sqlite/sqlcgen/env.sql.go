@@ -7,6 +7,8 @@ package sqlcgen
 
 import (
 	"context"
+
+	"go.bbkane.com/envelope/sqlite/sqlite"
 )
 
 const envCreate = `-- name: EnvCreate :one
@@ -21,14 +23,14 @@ RETURNING name, comment, create_time, update_time
 type EnvCreateParams struct {
 	Name       string
 	Comment    string
-	CreateTime string
+	CreateTime sqlite.SQLiteTime
 	UpdateTime string
 }
 
 type EnvCreateRow struct {
 	Name       string
 	Comment    string
-	CreateTime string
+	CreateTime sqlite.SQLiteTime
 	UpdateTime string
 }
 
@@ -113,7 +115,7 @@ WHERE name = ?
 type EnvShowRow struct {
 	Name       string
 	Comment    string
-	CreateTime string
+	CreateTime sqlite.SQLiteTime
 	UpdateTime string
 }
 
@@ -141,7 +143,7 @@ WHERE name = ?5
 type EnvUpdateParams struct {
 	NewName    *string
 	Comment    *string
-	CreateTime *string
+	CreateTime sqlite.SQLiteTime
 	UpdateTime *string
 	Name       string
 }
